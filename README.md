@@ -128,8 +128,9 @@ $$
 cosine_{similarity} = \frac{\sum_{i} q_{i} \cdot d_{i}}{\sqrt{\sum_{i} q_{i}^{2}} \cdot \sqrt{\sum_{i} d_{i}^{2}}}
 $$
 
-其中，$q_i$表示查询向量中第$i$个词项的TF-IDF值，$d_i$表示文档向量中第$i$个词项的TF-IDF值。
-4. **排序与返回结果**：
+其中，q_i表示查询向量中第i个词项的TF-IDF值，d_i表示文档向量中第i个词项的TF-IDF值。
+
+3. **排序与返回结果**：
 将文档按相似度降序排列，返回前`num`个结果。 
 <img src="pic/3-1.png" alt="图片描述" style="width:50%;">
 
