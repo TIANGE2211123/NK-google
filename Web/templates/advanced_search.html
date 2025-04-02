@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form, render_hidden_errors, render_form_row %}
+{% from 'bootstrap5/utils.html' import render_messages %}
+
+{% block styles %}
+{{ bootstrap.load_css() }}
+{% endblock %}
+{% block head_add %}
+    <link rel="stylesheet" type="text/css" href="../static/css/advance.css">
+{% endblock %}
+
+{% block page_content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="advanced-search-container">
+            <h2>高级搜索功能</h2>
+            <hr/>
+            <form method="POST">
+                {{ render_messages() }}
+                {{ render_hidden_errors(form) }}
+                {{ form.csrf_token }}
+                <!-- 输入关键词 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.all_these_words], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        请输入要搜索的关键词
+                    </div>
+                </div>
+                <!-- 完全匹配的词项 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.this_exact_word_or_phrase], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        完全匹配的词项
+                    </div>
+                </div>
+                <!-- 部分匹配的词项 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.any_of_these_words], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        至少包含的词项
+                    </div>
+                </div>
+                <!-- 不匹配的词项 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.none_of_these_words], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        排除词项
+                    </div>
+                </div>
+                <!-- 网站/域名过滤 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.site_or_domain], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        限定网站或域名
+                    </div>
+                </div>
+                <!-- 时间限制 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.time_limit], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        限定时间范围
+                    </div>
+                </div>
+                <!-- 选择搜索位置 -->
+                <div class="row form-row">
+                    <div class="col-md-8">
+                        {{ render_form_row([form.is_title_only], form_type="horizontal") }}
+                    </div>
+                    <div class="col-md-4 col-form-label">
+                        搜索位置
+                    </div>
+                </div>
+                <!-- 提交按钮 -->
+                <div class="row form-row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-submit">开始高级搜索</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block head_add %}
+    <title> {{ keywords }} - 信息检索 </title>
+{% endblock %}
+
+{% block styles %}
+    {{ bootstrap.load_css() }}
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Logo样式 */
+        #logo {
+            display: block;
+            margin: 2rem auto 1rem;
+            max-width: 300px;
+        }
+
+        /* 搜索框样式 */
+        .form-control {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
+
+        .btn-search {
+            border-radius: 24px;
+            padding: 8px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 搜索结果的样式 */
+        .result {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .result a {
+            color: #1a0dab;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+            color: #551a8b;
+        }
+
+        .result span {
+            font-size: 14px;
+            color: #4d5156;
+        }
+
+        .result-url {
+            font-size: 12px;
+            color: #006621;
+        }
+
+        .result-snapshot {
+            font-size: 8px;
+            color: #555;
+            margin-left: 10px;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .sidebar h6 {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .sidebar ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 搜索历史按钮 */
+        .history-btn {
+            border-radius: 24px;
+            margin: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block page_content %}
+    <!-- Logo -->
+    <img id="logo" src="../static/img/google.png" alt="搜索Logo">
+
+    <!-- 搜索栏 -->
+    <div class="container">
+        <form action="{{ url_for('front._result_page') }}" method="get" style="text-align:center; margin-bottom: 2rem;">
+            <input type="text" class="form-control" name="keywords" placeholder="请输入关键词：" value="{{ keywords }}">
+            <button class="btn btn-outline-dark btn-search" type="submit">立即搜索</button>
+        </form>
+    </div>
+
+    <!-- 搜索结果和侧边栏 -->
+    <div class="container">
+        <div class="row">
+            <!-- 搜索结果展示 -->
+            <div class="col-md-9">
+                <div id="result-stats" style="font-size:14px; color:#555;">
+                    找到约 {{ len_results }} 条结果
+                    <nobr>（耗时 {{ cost_time }} 秒）</nobr>&nbsp;
+                    <a href="{{ url_for('front._advanced_search', keywords = keywords) }}" style="font-size:14px">高级搜索</a>
+                </div>
+                <br/>
+                {% for result in results %}
+                    <div class="result">
+                        {% if result|length > 2 %}
+                            <a href="{{ result[1] }}">{{ result[0] }}</a><br/>
+                            {% if result[2] %}
+                                <span>{{ result[2] }}</span><br/>
+                            {% endif %}
+                            <span class="result-url">{{ result[1] }}</span>
+                            <a href="{{ url_for('front._snapshot', url=result[1]) }}" class="result-snapshot">网页快照</a>
+                        {% else %}
+                            <a href="{{ result.url }}" target="_blank">{{ result.title }}</a><br/>
+                            <span>{{ result.description }}</span><br/>
+                            <span class="result-url">{{ result.doc_link }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- 侧边栏 -->
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h6>站外内容推荐</h6>
+                    <ul id="suggestion"></ul>
+                    <hr/>
+                    <h6>站内内容推荐</h6>
+                    <ul id="personal_suggestion"></ul>
+                    <hr/>
+                    {% if search_history %}
+                        <h6>搜索历史</h6>
+                        {% for i in search_history %}
+                            <a href="{{ url_for('front._result_page', keywords=i) }}"
+                               class="btn btn-outline-secondary history-btn">{{ i }}</a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_add %}
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../static/js/recommend.js"></script>
+    <script>
+        window.onload = function () {
+            query_suggest('{{ keywords }}');
+            personal_suggest();
+        }
+    </script>
+{% endblock %}

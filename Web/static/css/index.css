@@ -1,0 +1,106 @@
+        /* 全局样式 */
+        body {
+            background-image: url("../img/google.png");
+            background-size: auto 35%; /* 自动宽度，高度为屏幕高度的20% */
+            background-repeat: no-repeat;
+            background-position: center top; /* 居中偏上 */
+            background-attachment: fixed;
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 搜索框和按钮样式 */
+        .input-group {
+            position: relative;
+            width: 584px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 1px 8px rgba(66, 133, 244, 0.3);
+        }
+
+        .btn {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 24px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #3367d6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* 搜索历史下拉样式 */
+        .search-history {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(32,33,36,0.28);
+            width: 100%;
+            top: 100%;
+            border-radius: 0 0 24px 24px;
+            border: 1px solid #dfe1e5;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .search-history a {
+            padding: 10px 20px;
+            display: block;
+            color: #202124;
+            font-size: 16px;
+            text-decoration: none;
+            border-bottom: 1px solid #e0e0e0;
+            transition: all 0.2s ease;
+        }
+
+        .search-history a:last-child {
+            border-bottom: none;
+        }
+
+        .search-history a:hover {
+            background-color: #f1f3f4;
+        }
+
+        /* 居中布局 */
+        .center-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .input-group {
+                width: 90%;
+            }
+            .form-control {
+                font-size: 14px;
+            }
+            .btn {
+                font-size: 14px;
+            }
+        }

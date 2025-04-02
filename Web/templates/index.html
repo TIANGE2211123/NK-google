@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+    {% block head_add %}
+        <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    {% endblock %}
+
+    {% block page_content %}
+    <div class="container center-container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <form action="{{ url_for('front._result_page') }}" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="keywords" placeholder="请输入关键词：" autocomplete="off">
+                        <!-- 搜索历史下拉列表 -->
+                        {% if search_history %}
+                        <div class="search-history">
+                            {% for i in search_history %}
+                            <a href="{{ url_for('front._result_page', keywords=i) }}">{{ i }}</a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <button class="btn" type="submit">搜索</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    
+    {% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.querySelector('input[name="keywords"]');
+            const historyList = document.querySelector('.search-history');
+    
+            input.addEventListener('focus', function () {
+                if (historyList) {
+                    historyList.style.display = 'block';
+                }
+            });
+    
+            document.addEventListener('click', function (event) {
+                if (!input.contains(event.target) && !historyList.contains(event.target)) {
+                    if (historyList) {
+                        historyList.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+    {% endblock %}
